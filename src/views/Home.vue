@@ -1,18 +1,46 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
+  <div id="home">
+    <div class="menus">
+      <a-menu theme="dark" mode="inline">
+        <slider-bar v-for="(item, index) in $router.options.routes[0].children" :key="index" :map="item"></slider-bar>
+      </a-menu>
+    </div>
+    <div class="menu-view">
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
-import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
-
+import { onMounted } from 'vue';
+import SliderBar from '@/components/SliderBar.vue';
+import { Options, Vue, ClassComponentHooks } from 'vue-class-component';
 @Options({
   components: {
-    HelloWorld
+    SliderBar
+  },
+  data() {
+    return {};
+  },
+  methods: {
+    clickedFn() {
+      console.log(this.$router.options.routes);
+    }
   }
 })
 export default class Home extends Vue {}
 </script>
+
+<style lang="scss">
+#home {
+  display: flex;
+  .menus {
+    width: 256px;
+    height: 100vh;
+    background-color: #001529;
+  }
+  .menu-view {
+    flex: 1;
+  }
+}
+</style>

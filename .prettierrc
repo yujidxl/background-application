@@ -1,0 +1,5 @@
+{
+  "singleQuote" : true,
+  "ignorePath": "node_modules",
+  "semi": true  
+}
