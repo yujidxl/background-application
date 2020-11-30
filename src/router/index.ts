@@ -10,7 +10,7 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: '/settings',
         name: '配置面板',
-        component: () => import('../views/pages/Settings.vue'),
+        component: () => import('../views/pages/settings/UserSettings.vue'),
         children: [
           {
             path: '/settings/user-settings',
@@ -25,6 +25,18 @@ const routes: Array<RouteRecordRaw> = [
         ]
       },
       {
+        path: 'User',
+        name: '用户模块',
+        component: () => import('../views/pages/user/UserList.vue'),
+        children: [
+          {
+            path: '/user/user-list',
+            name: '用户列表',
+            component: () => import('../views/pages/user/UserList.vue')
+          }
+        ]
+      },
+      {
         path: '/about',
         name: '关于我们',
         // route level code-splitting
@@ -34,7 +46,8 @@ const routes: Array<RouteRecordRaw> = [
           import(/* webpackChunkName: "about" */ '../views/pages/About.vue')
       }
     ]
-  }, {
+  },
+  {
     path: '/login',
     name: '登录',
     component: () => import('../views/Login.vue')

@@ -6,7 +6,7 @@ import store from './store';
 import axios from './http';
 import './mock';
 import './login';
-import { Button, Menu, Form, Input, message } from 'ant-design-vue';
+import { Button, Menu, Form, Input, message, Table, Tag } from 'ant-design-vue';
 
 const app = createApp(App)
   .use(store)
@@ -14,7 +14,9 @@ const app = createApp(App)
   .use(Button)
   .use(Menu)
   .use(Form)
-  .use(Input);
+  .use(Input)
+  .use(Table)
+  .use(Tag);
 app.config.globalProperties.$axios = axios;
 app.config.globalProperties.$message = message;
 app.mount('#app');

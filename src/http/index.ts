@@ -1,7 +1,9 @@
 import axios from 'axios';
-import { message } from 'ant-design-vue';
+import { message, Modal } from 'ant-design-vue';
+import store from '@/store';
+import router from '@/router';
 const instance = axios.create({
-  baseURL: 'localhost:8000',
+  baseURL: '//localhost:3000',
   timeout: 3000
 });
 
@@ -9,6 +11,18 @@ const instance = axios.create({
 instance.interceptors.request.use(
   config => {
     // Do something before request is sent
+    const now = +new Date();
+    const tokenExpires = localStorage.getItem('token_expires');
+    if (tokenExpires) {
+      if (+tokenExpires >= now) {
+        const token = localStorage.getItem('token');
+        if (token) {
+          config.headers['Authorization'] = 'Bearer ' + token;
+        }
+      } else {
+        store.commit('DELETE_TOKEN');
+      }
+    }
     return config;
   },
   error => {
@@ -23,7 +37,19 @@ instance.interceptors.request.use(
 
 // respone拦截器
 instance.interceptors.response.use(
-  response => response.data,
+  response => {
+    if (response.data.code === -401) {
+      store.commit('DELETE_TOKEN');
+      Modal.error({
+        title: '登录失效',
+        content: '登录状态已过期，请重新登录！',
+        onOk() {
+          router.push('/login');
+        }
+      });
+    }
+    return response.data;
+  },
   error => {
     console.log('err' + error); // for debug
     message.error(error.message);
